@@ -15,23 +15,16 @@ public class Launcher {
     public static void main(String[] args) {
 
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(Launcher.class);
-        Launcher launcher = ctx.getBean(Launcher.class);
-        SpringApplication.run(launcher.getClass(), args);
+        RabbitTemplate rabbitTemplate  = ctx.getBean(RabbitTemplate.class);
 
-        ConnectionFactory connectionFactory = new CachingConnectionFactory();
-
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-
-        String outputMessage = "Write message, or q for exit";
+        String outputMessage = "Input a message or q to exit";
         System.out.println(outputMessage);
-
-
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             String input = scanner.nextLine();
             if (input.equals("q")) {
-                System.out.println("Bye");
+                System.out.println("Left");
                 break;
             }
             rabbitTemplate.convertAndSend("chat_messages", input);
